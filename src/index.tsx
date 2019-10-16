@@ -14,6 +14,33 @@ const initialState = {
     counter: 0
 }
 
+const dynamicContent = document.getElementById("counterValue") as HTMLSpanElement;
+function render() {
+    console.log("DOM will be updated");
+    dynamicContent.innerHTML = store.getState().counter.toString();
+}
+
+
+const incrementButton = document.getElementById('increment') as HTMLButtonElement;
+
+incrementButton.addEventListener(
+    'click',
+    function () {
+        //the reducerFunction will be called! 
+        const incrementAction = { type: 'DECREMENT' };
+        store.dispatch(incrementAction);
+    }
+)
+
+const decrementButton = document.getElementById('decrement') as HTMLButtonElement;
+decrementButton.addEventListener(
+    'click',
+    function () {
+        const decrementAction = { type: 'DECREMENT' };
+        store.dispatch(decrementAction);
+    }
+)
+
 function reducerFunction(state = initialState, action: any) {
     let newState = JSON.parse(JSON.stringify(state));
     console.log("copy of state:" + JSON.stringify(state));
@@ -31,31 +58,6 @@ function reducerFunction(state = initialState, action: any) {
 
 const store = createStore(reducerFunction)
 
-const dynamicContent = document.getElementById("counterValue") as HTMLSpanElement;
-
 render();
-function render() {
-    console.log("DOM will be updated");
-    dynamicContent.innerHTML = store.getState().counter.toString();
-}
-
-const incrementButton = document.getElementById('increment') as HTMLButtonElement;
-incrementButton.addEventListener(
-    'click',
-    function () {
-        store.dispatch({ type: 'INCREMENT' })
-    }
-)
-
-const decrementButton = document.getElementById('decrement') as HTMLButtonElement;
-decrementButton.addEventListener(
-    'click',
-    function () {
-        const decrementAction = { type: 'DECREMENT' };
-        store.dispatch(decrementAction)
-    }
-)
-
-
 store.subscribe(render);
 
